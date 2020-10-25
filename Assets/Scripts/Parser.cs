@@ -38,6 +38,25 @@ public class Parser : MonoBehaviour
             case "ECHO":
                 terminalTextHandler.FeedLine(input_text.Substring(input_text.IndexOf(" ") + 1));
                 break;
+            case "OPEN":
+                if (inputs.Length < 2)
+                {
+                    terminalTextHandler.FeedLine("Missing argument: FILE_NAME");
+                }
+                else if (!fileSystem.OpenNode(inputs[1]))
+                {
+                    terminalTextHandler.FeedLine("Unable to open file " + inputs[1]);
+                }
+                else
+                {
+                    terminalTextHandler.FeedLine("Opened file " + inputs[1]);
+                }
+                break;
+            case "LIST":
+                foreach (FileNode node in fileSystem.GetChildNodes()) {
+                    terminalTextHandler.FeedLine(node.name);
+                }
+                break;
             default:
                 terminalTextHandler.FeedLine("Command unknown. Please use the HELP command for a list of common commands.");
                 break;
