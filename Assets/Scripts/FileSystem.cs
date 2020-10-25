@@ -18,6 +18,9 @@ public class FileSystem : MonoBehaviour
         {
             nodes.AddRange(tree.theTree);
         }
+
+        childNodes = nodes;
+        OpenNode("root");
     }
 
     public bool OpenNode(string node_name)
@@ -60,5 +63,9 @@ public class FileSystem : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public List<FileNode> GetChildNodes() {
+        return childNodes;
     }
 }
