@@ -17,8 +17,8 @@ public enum FileType {
 [System.Serializable]
 public class FileNode {
     [Header("Names")]
-    public string parentName;
     public string name;
+    public string parentName;
 
     [Header("Password")]
     public bool locked;
