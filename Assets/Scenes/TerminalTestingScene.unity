@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059377bcfc0873640ba615eaaf00f883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Trees:
+  trees:
   - {fileID: 11400000, guid: 0a9a6c701b276d64db172a0c91bb5290, type: 2}
 --- !u!1 &234517098
 GameObject:
@@ -521,7 +521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0afdde65a705b624ab9ad7f57adbd72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TerminalTextHandler: {fileID: 234517102}
+  terminalTextHandler: {fileID: 0}
+  fileSystem: {fileID: 0}
 --- !u!1 &1527511094
 GameObject:
   m_ObjectHideFlags: 0

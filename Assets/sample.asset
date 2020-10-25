@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a873d32ec740a394d93c3291267b002d, type: 3}
   m_Name: sample
   m_EditorClassIdentifier: 
-  TheTree:
-  - ParentName: root
-    Name: TestFile
+  theTree: []

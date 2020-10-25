@@ -7,25 +7,26 @@ using UnityEngine.UI;
 public class Parser : MonoBehaviour
 {
 
-    public TerminalHandler TerminalTextHandler;
+    public TerminalHandler terminalTextHandler;
+    public FileSystem fileSystem;
 
-    private InputField InputFieldHandler;
+    private InputField inputField;
 
     public void Start() {
-        InputFieldHandler = gameObject.GetComponent<InputField>();
+        inputField = gameObject.GetComponent<InputField>();
     }
 
     public void Update() {
-        InputFieldHandler.Select();
-        InputFieldHandler.ActivateInputField();
+        inputField.Select();
+        inputField.ActivateInputField();
     }
 
     public void DetectInput(String input_text) {
-        if (Input.GetKeyDown(KeyCode.Return) && TerminalTextHandler.TerminalIdle()) {
-            TerminalTextHandler.FeedLine("> " + input_text);
+        if (Input.GetKeyDown(KeyCode.Return) && terminalTextHandler.TerminalIdle()) {
+            terminalTextHandler.FeedLine("> " + input_text);
             Parse(input_text);
         }
-        InputFieldHandler.text = "";
+        inputField.text = "";
     }
 
     public void Parse(string input_text) {
@@ -35,10 +36,10 @@ public class Parser : MonoBehaviour
 
         switch (command) {
             case "ECHO":
-                TerminalTextHandler.FeedLine(input_text.Substring(input_text.IndexOf(" ") + 1));
+                terminalTextHandler.FeedLine(input_text.Substring(input_text.IndexOf(" ") + 1));
                 break;
             default:
-                TerminalTextHandler.FeedLine("Command unknown. Please use the HELP command for a list of common commands.");
+                terminalTextHandler.FeedLine("Command unknown. Please use the HELP command for a list of common commands.");
                 break;
         }
     }

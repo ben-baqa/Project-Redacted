@@ -5,11 +5,27 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FileTree", menuName = "Scriptable Objects/Create File Tree", order = 1)]
 public class FileTree : ScriptableObject
 {
-    public List<FileNode> TheTree;
+    public List<FileNode> theTree;
+}
+
+public enum FileType { 
+    Text,
+    Directory,
+    Executable
 }
 
 [System.Serializable]
 public class FileNode {
-    public string ParentName;
-    public string Name;
+    [Header("Names")]
+    public string parentName;
+    public string name;
+
+    [Header("Password")]
+    public bool locked;
+    public string password;
+
+    [Header("File type and content")]
+    public FileType type;
+    [TextArea(10, 10)]
+    public string content;
 }
