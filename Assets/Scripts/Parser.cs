@@ -12,48 +12,82 @@ public class Parser : MonoBehaviour
 
     private InputField inputField;
 
-    public void Start() {
+    private string previousCommand;
+
+    public void Start()
+    {
         inputField = gameObject.GetComponent<InputField>();
     }
 
-    public void Update() {
+    public void Update()
+    {
         inputField.Select();
         inputField.ActivateInputField();
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            inputField.text = previousCommand;
+        }
     }
 
-    public void DetectInput(String input_text) {
-        if (Input.GetKeyDown(KeyCode.Return) && terminalTextHandler.TerminalIdle()) {
+    public void DetectInput(String input_text)
+    {
+        if (Input.GetKeyDown(KeyCode.Return) && terminalTextHandler.TerminalIdle())
+        {
+            previousCommand = input_text;
             terminalTextHandler.FeedLine("> " + input_text);
             Parse(input_text);
         }
         inputField.text = "";
     }
 
-    public void Parse(string input_text) {
+    public void Parse(string input_text)
+    {
         input_text = input_text.Trim();
         string[] inputs = input_text.Split(' ');
         string command = inputs[0].ToUpper();
 
-        switch (command) {
+        switch (command)
+        {
             case "ECHO":
-                terminalTextHandler.FeedLine(input_text.Substring(input_text.IndexOf(" ") + 1));
+                if (inputs.Length < 2)
+                {
+                    terminalTextHandler.FeedLine("Unable to print to terminal due to: MISSING_PRINTABLE_TEXT");
+                }
+                else
+                {
+                    terminalTextHandler.FeedLine(input_text.Substring(input_text.IndexOf(" ") + 1));
+                }
                 break;
             case "OPEN":
                 if (inputs.Length < 2)
                 {
-                    terminalTextHandler.FeedLine("Missing argument: FILE_NAME");
-                }
-                else if (!fileSystem.OpenNode(inputs[1]))
-                {
-                    terminalTextHandler.FeedLine("Unable to open file " + inputs[1]);
+                    terminalTextHandler.FeedLine("Unable to open file due to: MISSING_FILE_NAME");
                 }
                 else
                 {
-                    terminalTextHandler.FeedLine("Opened file " + inputs[1]);
+                    switch (fileSystem.OpenNode(inputs[1], inputs.Length > 2 ? inputs[2] : ""))
+                    {
+                        case OpenFileStatus.ACCESS_DENIED:
+                            terminalTextHandler.FeedLine("Unable to open file due to: ACCESS_DENIED");
+                            break;
+                        case OpenFileStatus.WRONG_PASSWORD:
+                            terminalTextHandler.FeedLine("Unable to open file due to: WRONG_PASSWORD");
+                            break;
+                        case OpenFileStatus.FILE_NOT_FOUND:
+                            terminalTextHandler.FeedLine("Unable to open file due to: FILE_NOT_FOUND");
+                            break;
+                        default:
+                            terminalTextHandler.FeedLine("Opened file successfully");
+                            break;
+                    }
                 }
                 break;
+            case "DOWNLOAD":
+                break;
             case "LIST":
-                foreach (FileNode node in fileSystem.GetChildNodes()) {
+                foreach (FileNode node in fileSystem.GetChildNodes())
+                {
                     terminalTextHandler.FeedLine(node.name);
                 }
                 break;
