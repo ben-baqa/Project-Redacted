@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class TerminalHandler : MonoBehaviour
 {
-
     public float defaultPrintDelay = 3f;
 
     private Text terminalText;
@@ -14,7 +13,8 @@ public class TerminalHandler : MonoBehaviour
     private float nextPrintTime;
     private float printDelay;
 
-    public void Start() {
+    public void Start()
+    {
         terminalText = gameObject.GetComponent<Text>();
         buffer = new List<string>();
         currentlyPrinting = null;
@@ -23,18 +23,22 @@ public class TerminalHandler : MonoBehaviour
         nextPrintTime = Time.time;
     }
 
-    public void Update() {
-        if (buffer.Count > 0 && currentlyPrinting == null) {
+    public void Update()
+    {
+        if (buffer.Count > 0 && currentlyPrinting == null)
+        {
             currentlyPrinting = buffer[0];
             buffer.RemoveAt(0);
         }
-        else if (currentlyPrinting != null && Time.time > nextPrintTime) {
+        else if (currentlyPrinting != null && Time.time > nextPrintTime)
+        {
             if (currentlyPrinting.Length > 1)
             {
                 terminalText.text += currentlyPrinting[0];
                 currentlyPrinting = currentlyPrinting.Substring(1);
             }
-            else {
+            else
+            {
                 terminalText.text += currentlyPrinting + "\n";
                 currentlyPrinting = null;
             }
@@ -42,24 +46,28 @@ public class TerminalHandler : MonoBehaviour
         }
     }
 
-    public void FeedLine(string line) {
+    public void FeedLine(string line)
+    {
         buffer.Add(line);
     }
 
     public void FeedLines(string[] lines)
     {
-        foreach (string line in lines) {
+        foreach (string line in lines)
+        {
             buffer.Add(line);
         }
     }
 
-    public void Wipe() {
+    public void Wipe()
+    {
         currentlyPrinting = null;
         buffer.Clear();
         terminalText.text = "";
     }
 
-    public bool TerminalIdle() {
+    public bool TerminalIdle()
+    {
         return buffer.Count == 0 && currentlyPrinting == null;
     }
 }
