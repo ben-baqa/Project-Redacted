@@ -1,9 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+public enum OpenFileStatus
+{
+    SUCCESSFUL,
+    FILE_NOT_FOUND,
+    WRONG_PASSWORD,
+    ACCESS_DENIED
+}
 
 public class FileSystem : MonoBehaviour
 {
+    public TerminalHandler fileTerminal;
     public List<FileTree> trees;
     private List<FileNode> nodes;
 
@@ -23,28 +33,39 @@ public class FileSystem : MonoBehaviour
         OpenNode("root");
     }
 
-    public bool OpenNode(string node_name)
+    public OpenFileStatus OpenNode(string node_name, string password = "")
     {
-        for (int i = 0; i < childNodes.Count; i++) 
+        for (int i = 0; i < childNodes.Count; i++)
         {
-            if (childNodes[i].name == node_name) 
+            if (childNodes[i].name == node_name)
             {
-                currentNode = childNodes[i];
-                childNodes = new List<FileNode>();
-                foreach (FileNode node in nodes) 
+                if ((childNodes[i].locked && childNodes[i].password == password) || (!childNodes[i].locked))
                 {
-                    if (node.parentName == node_name)
+                    currentNode = childNodes[i];
+                    if (currentNode.type == FileType.DIRECTORY)
                     {
-                        childNodes.Add(node); 
+                        childNodes = new List<FileNode>();
+                        foreach (FileNode node in nodes)
+                        {
+                            if (node.parentName == node_name)
+                            {
+                                childNodes.Add(node);
+                            }
+                        }
                     }
+                    else if (currentNode.type == FileType.TEXT)
+                    {
+                        fileTerminal.FeedLine(currentNode.content);
+                    }
+                    return OpenFileStatus.SUCCESSFUL;
                 }
-                return true;
+                return OpenFileStatus.WRONG_PASSWORD;
             }
         }
-        return false;
+        return OpenFileStatus.FILE_NOT_FOUND;
     }
 
-    public bool OpenParentNode()
+    public OpenFileStatus OpenParentNode()
     {
         for (int i = 0; i < nodes.Count; i++)
         {
@@ -59,13 +80,14 @@ public class FileSystem : MonoBehaviour
                         childNodes.Add(node);
                     }
                 }
-                return true;
+                return OpenFileStatus.SUCCESSFUL;
             }
         }
-        return false;
+        return OpenFileStatus.FILE_NOT_FOUND;
     }
 
-    public List<FileNode> GetChildNodes() {
+    public List<FileNode> GetChildNodes()
+    {
         return childNodes;
     }
 }

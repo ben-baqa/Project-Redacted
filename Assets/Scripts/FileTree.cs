@@ -8,10 +8,11 @@ public class FileTree : ScriptableObject
     public List<FileNode> theTree;
 }
 
-public enum FileType { 
-    Text,
-    Directory,
-    Executable
+public enum FileType
+{
+    TEXT,
+    DIRECTORY,
+    EXECUTABLE
 }
 
 [System.Serializable]
