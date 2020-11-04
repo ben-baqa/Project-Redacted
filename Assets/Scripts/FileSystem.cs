@@ -29,11 +29,42 @@ public class FileSystem : MonoBehaviour
             nodes.AddRange(tree.theTree);
         }
 
-        childNodes = nodes;
-        OpenNode("root");
+        OpenNode(nodes, "root");
     }
 
-    public OpenFileStatus OpenNode(string node_name, string password = "")
+    public OpenFileStatus OpenNode(List<FileNode> list_of_nodes, string node_name, string password = "")
+    {
+        for (int i = 0; i < list_of_nodes.Count; i++)
+        {
+            if (list_of_nodes[i].name == node_name)
+            {
+                if ((list_of_nodes[i].locked && list_of_nodes[i].password == password) || (!list_of_nodes[i].locked))
+                {
+                    currentNode = nodes[i];
+                    if (currentNode.type == FileType.DIRECTORY)
+                    {
+                        childNodes = new List<FileNode>();
+                        foreach (FileNode node in nodes)
+                        {
+                            if (node.parentName == node_name)
+                            {
+                                childNodes.Add(node);
+                            }
+                        }
+                    }
+                    else if (currentNode.type == FileType.TEXT)
+                    {
+                        fileTerminal.FeedLine(currentNode.content);
+                    }
+                    return OpenFileStatus.SUCCESSFUL;
+                }
+                return OpenFileStatus.WRONG_PASSWORD;
+            }
+        }
+        return OpenFileStatus.FILE_NOT_FOUND;
+    }
+
+    public OpenFileStatus OpenChildNode(string node_name, string password = "")
     {
         for (int i = 0; i < childNodes.Count; i++)
         {

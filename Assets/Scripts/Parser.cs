@@ -66,7 +66,7 @@ public class Parser : MonoBehaviour
                 }
                 else
                 {
-                    switch (fileSystem.OpenNode(inputs[1], inputs.Length > 2 ? inputs[2] : ""))
+                    switch (fileSystem.OpenChildNode(inputs[1], inputs.Length > 2 ? inputs[2] : ""))
                     {
                         case OpenFileStatus.ACCESS_DENIED:
                             terminalTextHandler.FeedLine("Unable to open file due to: ACCESS_DENIED");
