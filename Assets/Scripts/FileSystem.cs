@@ -86,6 +86,7 @@ public class FileSystem : MonoBehaviour
                     }
                     else if (currentNode.type == FileType.TEXT)
                     {
+                        fileTerminal.Wipe();
                         fileTerminal.FeedLine(currentNode.content);
                     }
                     return OpenFileStatus.SUCCESSFUL;

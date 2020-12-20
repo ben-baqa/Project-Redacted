@@ -83,7 +83,17 @@ public class Parser : MonoBehaviour
                     }
                 }
                 break;
+            case "HELP":
+                terminalTextHandler.FeedLines(new String[] { 
+                    "List of available common commands:",
+                    "ECHO: print text or variable",
+                    "LIST: show list of available directory or file",
+                    "OPEN: open a file or a directory, password may be needed",
+                    "DOWNLOAD: download a file to your device"
+                });
+                break;
             case "DOWNLOAD":
+                terminalTextHandler.FeedLine("This functionality is not implemented.");
                 break;
             case "LIST":
                 foreach (FileNode node in fileSystem.GetChildNodes())

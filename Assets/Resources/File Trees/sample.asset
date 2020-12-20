@@ -31,22 +31,19 @@ MonoBehaviour:
     password: 
     type: 1
     content: 
-  - name: not porn
+  - name: not_porn
     parentName: homework
     locked: 0
     password: 
     type: 0
-    content: 
+    content: the porn file password is not 123
   - name: porn
     parentName: homework
     locked: 1
     password: 123
     type: 0
-    content: 'Ur fooled, this is not porn.
-
-
-      330300'
-  - name: family pics
+    content: Ur fooled, this is not porn.
+  - name: family_pics
     parentName: images
     locked: 0
     password: 
@@ -58,7 +55,7 @@ MonoBehaviour:
     password: 
     type: 0
     content: 
-  - name: actual homework
+  - name: actual_homework
     parentName: documents
     locked: 0
     password: 
