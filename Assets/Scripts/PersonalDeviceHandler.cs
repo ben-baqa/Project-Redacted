@@ -210,6 +210,7 @@ public class PersonalDeviceHandler : MonoBehaviour
             {
                 openedStorage = OpenedStorage.CONNECTED_STORAGE;
                 ReturnToRoot();
+                connectedStorage.locked = false;
                 return OpenNodeStatus.SUCCESSFUL;
             }
             return OpenNodeStatus.WRONG_PASSWORD;
@@ -220,6 +221,7 @@ public class PersonalDeviceHandler : MonoBehaviour
             {
                 openedStorage = OpenedStorage.PERSONAL_DEVICE_STORAGE;
                 ReturnToRoot();
+                personalDeviceStorage.locked = false;
                 return OpenNodeStatus.SUCCESSFUL;
             }
             return OpenNodeStatus.WRONG_PASSWORD;

@@ -105,7 +105,14 @@ public class Parser : MonoBehaviour
                 }
                 break;
             case "BACK":
-
+                switch (personalDeviceHandler.ReturnToParent()) {
+                    case OpenNodeStatus.NODE_NOT_FOUND:
+                        terminalTextHandler.FeedLine("Unable to open file due to: NODE_NOT_FOUND");
+                        break;
+                    default:
+                        terminalTextHandler.FeedLine("Open file successfully!");
+                        break;
+                }
                 break;
             case "HELP":
                 terminalTextHandler.FeedLine(
@@ -113,6 +120,7 @@ public class Parser : MonoBehaviour
                     "ECHO: print text or variable\n" +
                     "LIST: show list of available directory or file\n" +
                     "OPEN: open a file or a directory, password may be needed\n" +
+                    "BACK: return to parent folder\n" +
                     "DOWNLOAD: download a file to your device"
                 );
                 break;
