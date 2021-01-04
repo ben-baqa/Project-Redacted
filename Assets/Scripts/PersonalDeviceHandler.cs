@@ -107,11 +107,11 @@ public class PersonalDeviceHandler : MonoBehaviour
                 currentNode = nodeToOpen;
                 if (openedStorage == OpenedStorage.PERSONAL_DEVICE_STORAGE)
                 {
-                    childNodes = personalDeviceStorage.GetNodesAt($"{currentNode.directory}/{currentNode.name}");
+                    childNodes = personalDeviceStorage.GetNodesAt($"{currentNode.directory}{currentNode.name}/");
                 }
                 else
                 {
-                    childNodes = connectedStorage.GetNodesAt($"{currentNode.directory}/{currentNode.name}");
+                    childNodes = connectedStorage.GetNodesAt($"{currentNode.directory}{currentNode.name}/");
                 }
                 break;
             case NodeType.TEXT:
@@ -130,8 +130,15 @@ public class PersonalDeviceHandler : MonoBehaviour
         {
             if (!childNodes[index].locked || (childNodes[index].locked && childNodes[index].password == password))
             {
-                OpenAnyNode(name, currentNode.name);
-                return OpenNodeStatus.SUCCESSFUL;
+                if (fileBrowsingState == FileBrowsingState.BROWSING_FILE)
+                {
+                    OpenAnyNode(name, $"{currentNode.directory}{currentNode.name}/");
+                    return OpenNodeStatus.SUCCESSFUL;
+                }
+                else {
+                    OpenAnyNode(name, "");
+                    return OpenNodeStatus.SUCCESSFUL;
+                }
             }
                 return OpenNodeStatus.WRONG_PASSWORD;
         }
