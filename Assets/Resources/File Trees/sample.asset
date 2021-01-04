@@ -10,66 +10,36 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a873d32ec740a394d93c3291267b002d, type: 3}
-  m_Name: sample
+  m_Name: Sample
   m_EditorClassIdentifier: 
-  theTree:
-  - name: homework
-    parentName: root
+  nodes:
+  - name: pics
+    directory: 
     locked: 0
     password: 
-    type: 1
+    type: 2
     content: 
-  - name: images
-    parentName: root
+  - name: docs
+    directory: 
     locked: 0
     password: 
-    type: 1
+    type: 2
     content: 
-  - name: documents
-    parentName: root
-    locked: 0
-    password: 
-    type: 1
-    content: 
-  - name: not_porn
-    parentName: homework
-    locked: 0
-    password: 
-    type: 0
-    content: the porn file password is not 123
-  - name: porn
-    parentName: homework
-    locked: 1
-    password: 123
-    type: 0
-    content: Ur fooled, this is not porn.
   - name: family_pics
-    parentName: images
+    directory: pics
     locked: 0
     password: 
-    type: 0
+    type: 2
     content: 
   - name: porn
-    parentName: images
+    directory: pics
     locked: 0
     password: 
-    type: 0
+    type: 2
     content: 
-  - name: actual_homework
-    parentName: documents
-    locked: 0
-    password: 
-    type: 0
-    content: 
-  - name: porn
-    parentName: documents
-    locked: 0
-    password: 
-    type: 0
-    content: 
-  - name: root
-    parentName: 
-    locked: 0
-    password: 
+  - name: pic_01
+    directory: family_pics
+    locked: 1
+    password: 111
     type: 1
-    content: 
+    content: this is a sample text

@@ -51,14 +51,6 @@ public class TerminalHandler : MonoBehaviour
         buffer.Add(line);
     }
 
-    public void FeedLines(string[] lines)
-    {
-        foreach (string line in lines)
-        {
-            buffer.Add(line);
-        }
-    }
-
     public void Wipe()
     {
         currentlyPrinting = null;

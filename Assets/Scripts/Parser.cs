@@ -8,7 +8,7 @@ public class Parser : MonoBehaviour
 {
 
     public TerminalHandler terminalTextHandler;
-    public FileSystem fileSystem;
+    public PersonalDeviceHandler personalDeviceHandler;
 
     private InputField inputField;
 
@@ -66,39 +66,75 @@ public class Parser : MonoBehaviour
                 }
                 else
                 {
-                    switch (fileSystem.OpenChildNode(inputs[1], inputs.Length > 2 ? inputs[2] : ""))
+                    OpenNodeStatus status;
+                    if (inputs.Length > 2)
                     {
-                        case OpenFileStatus.ACCESS_DENIED:
-                            terminalTextHandler.FeedLine("Unable to open file due to: ACCESS_DENIED");
+                        switch (personalDeviceHandler.GetFileBrowsingState())
+                        {
+                            case FileBrowsingState.CHOOSING_STORAGE:
+                                status = personalDeviceHandler.OpenStorage(inputs[1], inputs[2]);
+                                break;
+                            default:
+                                status = personalDeviceHandler.OpenNodeAt(inputs[1], inputs[2]);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (personalDeviceHandler.GetFileBrowsingState())
+                        {
+                            case FileBrowsingState.CHOOSING_STORAGE:
+                                status = personalDeviceHandler.OpenStorage(inputs[1]);
+                                break;
+                            default:
+                                status = personalDeviceHandler.OpenNodeAt(inputs[1]);
+                                break;
+                        }
+                    }
+                    switch (status) {
+                        case OpenNodeStatus.NODE_NOT_FOUND:
+                            terminalTextHandler.FeedLine("Unable to open file due to: NODE_NOT_FOUND");
                             break;
-                        case OpenFileStatus.WRONG_PASSWORD:
+                        case OpenNodeStatus.WRONG_PASSWORD:
                             terminalTextHandler.FeedLine("Unable to open file due to: WRONG_PASSWORD");
                             break;
-                        case OpenFileStatus.FILE_NOT_FOUND:
-                            terminalTextHandler.FeedLine("Unable to open file due to: FILE_NOT_FOUND");
-                            break;
                         default:
-                            terminalTextHandler.FeedLine("Opened file successfully");
+                            terminalTextHandler.FeedLine("Open file successfully!");
                             break;
                     }
                 }
                 break;
+            case "BACK":
+
+                break;
             case "HELP":
-                terminalTextHandler.FeedLines(new String[] { 
-                    "List of available common commands:",
-                    "ECHO: print text or variable",
-                    "LIST: show list of available directory or file",
-                    "OPEN: open a file or a directory, password may be needed",
+                terminalTextHandler.FeedLine(
+                    "List of available common commands:\n" +
+                    "ECHO: print text or variable\n" +
+                    "LIST: show list of available directory or file\n" +
+                    "OPEN: open a file or a directory, password may be needed\n" +
                     "DOWNLOAD: download a file to your device"
-                });
+                );
                 break;
             case "DOWNLOAD":
                 terminalTextHandler.FeedLine("This functionality is not implemented.");
                 break;
             case "LIST":
-                foreach (FileNode node in fileSystem.GetChildNodes())
+                switch (personalDeviceHandler.GetFileBrowsingState())
                 {
-                    terminalTextHandler.FeedLine(node.name);
+                    case FileBrowsingState.CHOOSING_STORAGE:
+                        foreach (FileStorageHandler storage in personalDeviceHandler.ListAvailableStorages())
+                        {
+                            terminalTextHandler.FeedLine("[" + (storage.locked ? "#" : "_") + $"] [STO] {storage.storageName}");
+                        }
+                        break;
+                    default:
+                        foreach (FileNode node in personalDeviceHandler.ListNodesAtCurrentDir())
+                        {
+                            string node_type = node.type == NodeType.DIRECTORY ? "DIR" : node.type == NodeType.TEXT ? "TEX" : "EXE";
+                            terminalTextHandler.FeedLine("[" + (node.locked ? "#" : "_") + $"] [{node_type}] {node.name}");
+                        }
+                        break;
                 }
                 break;
             default:
