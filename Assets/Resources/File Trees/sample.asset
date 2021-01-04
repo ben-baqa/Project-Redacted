@@ -17,29 +17,29 @@ MonoBehaviour:
     directory: 
     locked: 0
     password: 
-    type: 2
+    type: 1
     content: 
   - name: docs
     directory: 
     locked: 0
     password: 
-    type: 2
+    type: 1
     content: 
   - name: family_pics
-    directory: pics
+    directory: pics/
     locked: 0
     password: 
-    type: 2
+    type: 1
     content: 
   - name: porn
-    directory: pics
+    directory: pics/
     locked: 0
     password: 
-    type: 2
+    type: 1
     content: 
   - name: pic_01
-    directory: family_pics
+    directory: pics/family_pics/
     locked: 1
     password: 111
-    type: 1
+    type: 0
     content: this is a sample text
