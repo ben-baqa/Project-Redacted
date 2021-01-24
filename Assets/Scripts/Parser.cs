@@ -100,6 +100,9 @@ public class Parser : MonoBehaviour
             case "LS":
                 ListCommand();
                 break;
+            case "CLEAR":
+                terminalTextHandler.Wipe();
+                break;
             default:
                 terminalTextHandler.FeedLine("Command unknown. Please use the HELP command for a list of common commands.");
                 break;
